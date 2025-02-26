@@ -3,25 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Cricket Stream</title>
+    <title>My Website</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Shaka Player CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.7/shaka-player.ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Live Cricket Stream</h1>
-        </header>
-        <main>
-            <div class="player-container">
-                <video id="videoPlayer" controls autoplay></video>
+
+    <!-- Header -->
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <input type="text" placeholder="Search..." class="search-input">
+    </header>
+
+    <!-- Home Page (Only this page will show the video player) -->
+    <main id="home" class="page">
+        <!-- Video Player (Hidden by default) -->
+        <div id="video-player-container" style="display: none;">
+            <video id="videoPlayer" controls style="width: 100%;"></video>
+            <div class="video-meta">
+                <h3 id="videoTitle"></h3>
+                <p id="videoMeta"></p>
             </div>
-        </main>
-        <footer>
-            <p>&copy; 2025 Cricket Stream. All rights reserved.</p>
-        </footer>
-    </div>
+        </div>
+
+        <!-- Home Page Content -->
+        <h2>New Content</h2>
+        <div class="posters">
+            <img src="poster1.jpg" alt="New Movie">
+            <img src="poster2.jpg" alt="New Highlight">
+        </div>
+    </main>
+
+    <!-- Other Pages (No Video Player) -->
+    <main id="sports" class="page">
+        <div class="video-list">
+            <div class="video-item" onclick="playVideo('sports-video.m3u8', 'HLS', 'Live Match', '50K views • 1 hour ago')">
+                <img src="sports-thumb.jpg" alt="Sports">
+                <p>Live Match - 50K views • 1 hour ago</p>
+            </div>
+        </div>
+    </main>
+
+    <main id="highlights" class="page">
+        <div class="video-list">
+            <div class="video-item" onclick="playVideo('highlight.mp4', 'Shaka', 'Match Highlights', '30K views • 2 days ago')">
+                <img src="highlight-thumb.jpg" alt="Highlight">
+                <p>Match Highlights - 30K views • 2 days ago</p>
+            </div>
+        </div>
+    </main>
+
+    <main id="movies" class="page">
+        <div class="video-list">
+            <div class="video-item" onclick="playVideo('movie.mp4', 'Shaka', 'Movie Title', '1M views • 5 days ago')">
+                <img src="movie-thumb.jpg" alt="Movie">
+                <p>Movie Title - 1M views • 5 days ago</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Navigation -->
+    <footer>
+        <div class="nav-icon" onclick="showPage('home')">
+            <img src="icons/home.png" alt="Home">
+        </div>
+        <div class="nav-icon" onclick="showPage('sports')">
+            <img src="icons/sports.png" alt="Sports">
+        </div>
+        <div class="nav-icon" onclick="showPage('highlights')">
+            <img src="icons/highlights.png" alt="Highlights">
+        </div>
+        <div class="nav-icon" onclick="showPage('movies')">
+            <img src="icons/movies.png" alt="Movies">
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
