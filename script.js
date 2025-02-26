@@ -1,35 +1,42 @@
-// Stream URL
-const streamUrl = "https://edge3-moblive.yuppcdn.net/drm/smil:tencricketdrm.smil/manifest.mpd";
-
-// ClearKey DRM configuration
-const drmConfig = {
-    clearKeys: {
-        // Key ID: Decryption Key
-        "9872e439f21f4a299cab249c6554daa3": "0cdfcfe0d0f1fbe100554ce3ef4c4665"
-    }
-};
-
-// Initialize Shaka Player
-document.addEventListener("DOMContentLoaded", () => {
-    const video = document.getElementById("videoPlayer");
-
-    if (shaka.Player.isBrowserSupported()) {
-        const player = new shaka.Player(video);
-
-        // Configure DRM
-        player.configure({
-            drm: {
-                clearKeys: drmConfig.clearKeys,
-            }
-        });
-
-        // Load stream
-        player.load(streamUrl).then(() => {
-            console.log("The DRM-protected video has been successfully loaded!");
-        }).catch(err => {
-            console.error("Error loading the video:", err);
-        });
-    } else {
-        alert("Your browser does not support Shaka Player.");
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    showPage('home');
 });
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.style.display = 'none';
+    });
+    document.getElementById(pageId).style.display = 'block';
+
+    // Home Page पर वापस आने पर वीडियो प्लेयर छुपाएँ
+    if (pageId !== 'home') {
+        document.getElementById("video-player-container").style.display = 'none';
+    }
+}
+
+function playVideo(videoSrc, type, title, metaData) {
+    // Home Page पर जाएं
+    showPage('home');
+
+    // Video Player को दिखाएँ
+    let playerContainer = document.getElementById("video-player-container");
+    let videoElement = document.getElementById("videoPlayer");
+
+    document.getElementById("videoTitle").innerText = title;
+    document.getElementById("videoMeta").innerText = metaData;
+    playerContainer.style.display = 'block';
+
+    // प्लेयर में वीडियो लोड करें
+    if (type === "HLS") {
+        if (Hls.isSupported()) {
+            let hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(videoElement);
+        } else {
+            videoElement.src = videoSrc;
+        }
+    } else if (type === "Shaka") {
+        let player = new shaka.Player(videoElement);
+        player.load(videoSrc);
+    }
+}
